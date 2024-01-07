@@ -1,16 +1,17 @@
 package main
 
 import (
-	"io"
 	"log"
 	"net/http"
+	"text/template"
 )
 
 func main () {
-	helloHandler := func(w http.ResponseWriter, req *http.Request) {
-		io.WriteString(w, "Hello world!\n")
+	indexHandler := func(w http.ResponseWriter, req *http.Request) {
+		tmpl := template.Must(template.ParseFiles("index.html"))
+		tmpl.Execute(w, nil)
 	}
 
-	http.HandleFunc("/hello", helloHandler)
+	http.HandleFunc("/", indexHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
