@@ -10,6 +10,8 @@ import (
 
 func main() {
 	indexHandler := func(w http.ResponseWriter, req *http.Request) {
+		log.Printf("%s %s\n", req.Method, req.RequestURI)
+
 		tmpl := template.Must(template.ParseFiles("view/index.html"))
 		autos := map[string][]model.Automobile{
 			"Autos": {
@@ -19,7 +21,18 @@ func main() {
 		}
 		tmpl.Execute(w, autos)
 	}
+	addAutomobileHandler := func(w http.ResponseWriter, req *http.Request) {
+		log.Printf("%s %s\n", req.Method, req.RequestURI)
+		
+		make := req.PostFormValue("make")
+		model := req.PostFormValue("model")
+		year := req.PostFormValue("year")
+		description := req.PostFormValue("description")
+
+		log.Printf("%s %s %s %s\n", make, model, year, description)
+	}
 
 	http.HandleFunc("/", indexHandler)
+	http.HandleFunc("/add-automobile/", addAutomobileHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
