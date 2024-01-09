@@ -11,21 +11,23 @@
     <div class="row m-4 g-4">
         <div class="col-6">
             <h1 class="mb-4">Automobile list</h1>
-            <div class="list-group">
+            <div class="list-group" id="automobile-list">
                 {{ range .Autos}}
-                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                  <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">{{ .Make }} {{ .Model }}</h5>
-                    <small>{{ .Year }}</small>
-                  </div>
-                  <p class="mb-1">{{ .Description }}</p>
-                </a>
+                    {{ block "automobile-list" .}}
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ .Make }} {{ .Model }}</h5>
+                            <small>{{ .Year }}</small>
+                        </div>
+                        <p class="mb-1">{{ .Description }}</p>
+                        </a>
+                    {{ end }}
                 {{ end }}
               </div>
         </div>
         <div class="col-4">
             <h1 class="mb-4">Add automobile</h1>
-            <form hx-post="/add-automobile/" >
+            <form hx-post="/add-automobile/" hx-target="#automobile-list" hx-swap="beforeend">
                 <div class="mb-2">
                     <label for="car-make">Car make</label>
                     <input type="text" name="make" id="car-make" class="form-control" />
